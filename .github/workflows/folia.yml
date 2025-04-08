@@ -12,8 +12,11 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-  schedule:
-    - cron: "0 16 * * *"
+    inputs:
+      version:
+        description: 'Folia version (e.g., latest, or commit hash)'
+        required: true
+
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -40,6 +43,8 @@ jobs:
       - name: clone folia repo
         run: |
           git clone https://github.com/PaperMC/Folia.git ~/folia
+          cd ~/folia
+          git checkout ver/${{ github.event.inputs.version }}
 
       - name: get build java version
         id: get_build_java_ver1
